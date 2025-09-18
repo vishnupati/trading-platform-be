@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+mongoose.set('useFindAndModify', false);
 const { DB_URL } = require("../config");
 
 module.exports = async () => {

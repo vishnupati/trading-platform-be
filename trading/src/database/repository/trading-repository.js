@@ -1,45 +1,47 @@
 const mongoose = require('mongoose');
 const { TradingModel } = require("../models");
 
-//Dealing with data base operations
 class TradingRepository {
 
-
-    async CreateProduct({ name, desc, type, unit,price, available, suplier, banner }){
-
-        const product = new TradingModel({
-            name, desc, type, unit,price, available, suplier, banner
-        })
-
-    //    return await TradingModel.findByIdAndDelete('607286419f4a1007c1fa7f40');
-
-        const productResult = await product.save();
-        return productResult;
-    }
-
-
-     async Products(){
-        return await TradingModel.find();
-    }
-   
-    async FindById(id){
-        
-       return await TradingModel.findById(id);
-
-    }
-
-    async FindByCategory(category){
-
-        const products = await TradingModel.find({ type: category});
-
-        return products;
-    }
-
-    async FindSelectedProducts(selectedIds){
-        const products = await TradingModel.find().where('_id').in(selectedIds.map(_id => _id)).exec();
-        return products;
-    }
+    async CreateOrder({ userId, symbol, type, side, quantity, price }) {
+            const order = new TradingModel({
+                userId,
+                symbol,
+                type,
+                side,
+                quantity,
+                price,
+                status: 'pending'
+            });
     
+            return order;
+    }
+
+    async FindById(id) {
+        return await TradingModel.findById(id);
+    }
+
+    async FindByUserId(userId, skip, limit) {
+        const orders = await TradingModel
+            .find({ userId })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+        return orders;
+    }
+
+    async CountOrders(userId) {
+        return await TradingModel.countDocuments({ userId });
+    }
+
+    async UpdateOrderStatus(orderId, status) {
+        return await TradingModel.findByIdAndUpdate(orderId, { status }, { new: true });
+    }
+
+    async FindOne(query) {
+        return await TradingModel.findOne(query);
+    }
+
 }
 
 module.exports = TradingRepository;

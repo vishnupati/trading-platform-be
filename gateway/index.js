@@ -7,8 +7,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("user", proxy("https://localhost:8001")); // users
-app.use("trading", proxy("https://localhost:8002")); // trading
+app.use("/user", proxy("http://localhost:8001")); // users
+app.use("/trading", proxy("http://localhost:8002")); // trading
 
 app.listen(8000, () => {
   console.log("Gateway is Listening to Port 8000");

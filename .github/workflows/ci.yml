@@ -18,8 +18,8 @@ jobs:
     - uses: actions/setup-node@v4
       with: { node-version: 18 }
     - run: npm ci --workspaces=false  # Root
-    - run: cd services/user-service && npm ci && npm test
-    - run: cd services/trading-service && npm ci && npm test
+    - run: cd user-service && npm ci && npm test
+    - run: cd trading-service && npm ci && npm test
     - name: Build Docker
       run: docker build -t user-service ./services/user-service
     - name: Deploy to AWS  # Stub: Use AWS actions for ECR/ECS
